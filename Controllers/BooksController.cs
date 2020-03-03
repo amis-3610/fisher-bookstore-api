@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Fisher.Bookstore.Controllers
 {
-
     [ApiController]
     [Route("api/[controller]")]
     public class BooksController : ControllerBase
