@@ -59,7 +59,7 @@ namespace Fisher.Bookstore.Controllers
               return NotFound();
           }
           booksRepository.DeleteBook(bookId);
-          return Ok();
+          return Ok(); 
       }
 
     }
