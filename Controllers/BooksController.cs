@@ -1,8 +1,7 @@
 namespace Fisher.Bookstore.Controllers
 {
-
-    public class BooksController
+    public class BookController
     {
-
+        
     }
 }
