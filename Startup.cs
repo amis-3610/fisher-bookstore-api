@@ -29,6 +29,8 @@ namespace Fisher.Bookstore
             services.AddControllers();
             services.AddCors();
             services.AddSingleton<IBooksRepository, TestBooksRepository>();
+            services.AddSingleton<IBooksRepository, TestBooksRepository>();
+            services.AddSingleton<IBooksRepository,TestBooksRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
