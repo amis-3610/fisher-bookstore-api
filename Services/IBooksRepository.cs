@@ -6,6 +6,7 @@ namespace Fisher.Bookstore.Services
 
     public interface IBooksRepository
     {
+      
         IEnumerable<Book> GetBooks();
         Book GetBook(int bookId);
         int AddBook(Book book);
