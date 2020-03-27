@@ -57,6 +57,7 @@ namespace Fisher.Bookstore.Controllers
             booksRepository.DeleteBook(bookId);
             return Ok();
         }
+    
 
     }
 
