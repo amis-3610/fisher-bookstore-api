@@ -1,8 +1,15 @@
+using Microsoft.AspNetCore.Mvc;
+
 namespace Fisher.Bookstore.Controllers
 {
-
-    public class AuthorsController
+    [ApiController]
+    [Route("api/[controler]")]
+    public class AuthorsController : ControllerBase
     {
-
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            return Ok();
+        }
     }
 }
