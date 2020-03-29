@@ -1,4 +1,0 @@
-namespace Fisher.Bookstore.Controllers
-{
-
-}
