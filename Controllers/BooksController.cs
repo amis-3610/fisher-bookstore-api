@@ -50,6 +50,7 @@ namespace Fisher.Bookstore.Controllers
             if (!booksRepository.BookExists(bookId))
             {
                 return NotFound();
+            
             }
 
             booksRepository.DeleteBook(bookId);
