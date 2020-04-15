@@ -49,5 +49,6 @@ namespace Fisher.Bookstore.Services
             db.Authors.Update(updateAuthor);
             db.SaveChanges();
         }
+
     }
 }
