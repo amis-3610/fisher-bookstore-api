@@ -1,7 +1,6 @@
 using Fisher.Bookstore.Models;
 using Fisher.Bookstore.Services;
 using Microsoft.AspNetCore.Mvc;
-
 namespace Fisher.Bookstore.Controllers
 {
 
@@ -10,27 +9,19 @@ namespace Fisher.Bookstore.Controllers
     public class BooksController : ControllerBase
     {
         private IBooksRepository booksRepository;
-
         public BooksController(IBooksRepository repository)
         {
             booksRepository = repository;
         }
 
-        [HttpGet]
-        public IActionResult GetAll()
+        [HttpGet("{bookID}")]
+        public IActionResult Get(int bookID)
         {
-            return Ok(booksRepository.GetBooks());
-        }
-
-        [HttpGet("{bookId}")]
-        public IActionResult Get(int bookId)
-        {
-            if (!booksRepository.BookExists(bookId))
+             if (!booksRepository.BookExists(bookID))
             {
                 return NotFound();
             }
-
-            return Ok(booksRepository.GetBook(bookId));
+            return Ok(booksRepository.GetBook(bookID));
         }
 
         [HttpPost]
