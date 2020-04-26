@@ -11,6 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Fisher.Bookstore.Services;
+using Microsoft.EntityFrameworkCore;
+using Fisher.Bookstore.Data;
+
+
 
 namespace Fisher.Bookstore
 {
@@ -28,8 +32,11 @@ namespace Fisher.Bookstore
         {
             services.AddControllers();
             services.AddCors();
-            services.AddSingleton<IBooksRepository, TestBooksRepository>();
-            services.AddSingleton<IAuthorsRepository, TestAuthorsRepository>();
+            services.AddDbContext<BookstoreContext>(options => 
+                options.UseNpgsql(Configuration.GetConnectionString("BookstoreContext"))
+                );
+            services.AddScoped<IBooksRepository, BooksRepository>();
+            services.AddScoped<IAuthorsRepository, AuthorsRepository>();
 
         }
 
