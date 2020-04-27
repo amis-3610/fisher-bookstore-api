@@ -23,10 +23,8 @@ namespace Fisher.Bookstore
         {
             services.AddControllers();
             services.AddCors();
-            services.AddDbContext<BookstoreContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("BookstoreContext"))
-            );
-            services.AddScoped<IBooksRepository, BooksRepository>();
+            services.AddSingleton<IBooksRepository, TestBooksRepository>();
+            services.AddSingleton<IAuthorsRepository, TestAuthorsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
