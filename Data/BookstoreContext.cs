@@ -7,9 +7,10 @@ namespace Fisher.Bookstore.Data
     {
         public BookstoreContext(DbContextOptions<BookstoreContext> options)
             : base(options)
+
         { }
         public DbSet<Book> Books { get; set; }
-        public DbSet<Author> Authors { get; set; }
+        public DbSet<Author> Authors { get; set; } 
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -22,9 +23,9 @@ namespace Fisher.Bookstore.Data
             .HasForeignKey(ba => ba.BookId);
 
             builder.Entity<BookAuthor>()
-           .HasOne(ba => ba.Author)
-           .WithMany(a => a.BookAuthor)
-           .HasForeignKey(ba => ba.AuthorId);
+            .HasOne(ba => ba.Author)
+            .WithMany(a => a.BookAuthor)
+            .HasForeignKey(ba => ba.AuthorId);
         }
 
     }

@@ -4,7 +4,6 @@ using Fisher.Bookstore.Models;
 
 namespace Fisher.Bookstore.Services
 {
-
     public class BooksRepository : IBooksRepository
     {
         private readonly BookstoreContext db;
@@ -14,7 +13,7 @@ namespace Fisher.Bookstore.Services
             this.db = db;
         }
 
-        public int AddBook(Book book)
+         public int AddBook(Book book)
         {
             db.Books.Add(book);
             db.SaveChanges();
@@ -24,7 +23,6 @@ namespace Fisher.Bookstore.Services
         public bool BookExists(int bookId)
         {
             return (db.Books.Find(bookId) != null);
-
         }
 
         public void DeleteBook(int bookId)
