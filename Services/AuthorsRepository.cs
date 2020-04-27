@@ -1,66 +1,52 @@
 using System.Collections.Generic;
+using Fisher.Bookstore.Data;
 using Fisher.Bookstore.Models;
 
 namespace Fisher.Bookstore.Services
 {
-
     public class AuthorsRepository : IAuthorsRepository
     {
-        private Dictionary<int, Author> authors;
-        public AuthorsRepository()
-        {
-            authors = new Dictionary<int, Author>();
+        private readonly BookstoreContext db;
 
-            new List<Author>{
-                new Author{Name="J.K Rowling"},
-                new Author{Name="Margaret Atwood"},
-                new Author{Name="Ursula Le Guin"},
-            }.ForEach(a => this.AddAuthor(a));
+        public AuthorsRepository(BookstoreContext db){
+            this.db = db;
         }
 
         public int AddAuthor(Author author)
         {
-            if (author.Id == 0)
-            {
-                int key = authors.Count + 1;
-                while (authors.ContainsKey(key))
-                {
-                    key++;
-                }
-                author.Id = key;
-            }
-            authors[author.Id] = author;
+            db.Authors.Add(author);
+            db.SaveChanges();
             return author.Id;
-        }
-
-        public void DeleteAuthor(int authorId)
-        {
-            authors.Remove(authorId);
-        }
-
-        public Author GetAuthor(int authorId)
-        {
-            return authors.GetValueOrDefault(authorId);
-        }
-
-        public IEnumerable<Author> GetAuthors()
-        {
-            return authors.Values;
-        }
-
-        public IEnumerable<Book> GetBooksByAuthor(int authorId)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void UpdateAuthor(Author author)
-        {
-            authors[author.Id] = author;
         }
 
         public bool AuthorExists(int authorId)
         {
-            return authors.ContainsKey(authorId);
+            return (db.Authors.Find(authorId) != null);
+        }
+
+        public void DeleteAuthor(int authorId)
+        {
+            var author = db.Authors.Find(authorId);
+            db.Authors.Remove(author);
+            db.SaveChanges();
+        }
+
+        public Author GetAuthor(int authorId)
+        {
+            return db.Authors.Find(authorId);
+        }
+
+        public IEnumerable<Author> GetAuthors()
+        {
+            return db.Authors;
+        }
+
+        public void UpdateAuthor(Author author)
+        {
+            var updateAuthor = db.Authors.Find(author.Id);
+            updateAuthor.Name = author.Name;
+            db.Authors.Update(updateAuthor);
+            db.SaveChanges();
         }
     }
 }

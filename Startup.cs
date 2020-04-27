@@ -33,6 +33,8 @@ namespace Fisher.Bookstore
             services.AddDbContext<BookstoreContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("BookstoreContext"))
             );
+            services.AddScoped<IBooksRepository, BooksRepository>();
+            services.AddScoped<IAuthorsRepository, AuthorsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
