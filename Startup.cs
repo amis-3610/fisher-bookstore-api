@@ -13,6 +13,10 @@ using Microsoft.Extensions.Logging;
 using Fisher.Bookstore.Services;
 using Microsoft.EntityFrameworkCore;
 using Fisher.Bookstore.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Fisher.Bookstore
 {
@@ -34,7 +38,29 @@ namespace Fisher.Bookstore
             services.AddScoped<IBooksRepository, BookRepository>();
             services.AddScoped<IAuthorsRepository, AuthorRepository>();
 
-        }
+            string domain = $"https://{Configuration["Auth0:Domain"]}/";
+    services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+    }).AddJwtBearer(options =>
+    {
+        options.Authority = domain;
+        options.Audience = Configuration["Auth0:ApiIdentifier"];
+    });
+    
+    services.AddAuthorization(options =>
+    {
+        options.AddPolicy("read:messages", policy => policy.Requirements.Add(new HasScopeRequirement("read:messages", domain)));
+    });
+
+    // register the scope authorization handler
+    services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+    
+    // Add framework services.
+    services.AddMvc();
+}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -53,6 +79,9 @@ namespace Fisher.Bookstore
                 .AllowAnyMethod());
 
             app.UseAuthorization();
+
+            app.UseAuthentication();
+            
 
             app.UseEndpoints(endpoints =>
             {

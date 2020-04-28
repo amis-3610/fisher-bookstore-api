@@ -1,5 +1,6 @@
 using Fisher.Bookstore.Models;
 using Fisher.Bookstore.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace Fisher.Bookstore.Controllers
 {
@@ -48,6 +49,7 @@ namespace Fisher.Bookstore.Controllers
             return Ok(book);
         }
         [HttpDelete("{bookId}")]
+        [Authorize]
         public IActionResult Delete(int bookId)
         {
             if(!booksRepository.BookExists(bookId))
