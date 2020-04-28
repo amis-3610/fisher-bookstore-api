@@ -9,34 +9,34 @@ namespace Fisher.Bookstore.Controllers
     [Route("api/[controller]")]
     public class AuthorsController : ControllerBase
     {
-        private IAuthorsRepository authorsRepository;
+        private IAuthorsRepository AuthorsRepository;
 
         public AuthorsController(IAuthorsRepository repository)
         {
-            authorsRepository = repository;
+            AuthorsRepository = repository;
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(authorsRepository.GetAuthors());
+            return Ok(AuthorsRepository.GetAuthors());
         }
 
         [HttpGet("{authorId}")]
         public IActionResult Get(int authorId)
         {
-            if (!authorsRepository.AuthorExists(authorId))
+            if (!AuthorsRepository.AuthorExists(authorId))
             {
                 return NotFound();
             }
 
-            return Ok(authorsRepository.GetAuthor(authorId));
+            return Ok(AuthorsRepository.GetAuthor(authorId));
         }
 
         [HttpPost]
         public IActionResult Post([FromBody]Author author)
         {
-            var authorId = authorsRepository.AddAuthor(author);
+            var authorId  = AuthorsRepository.AddAuthor(author);
             return Created($"https://localhost:5001/api/authors/{authorId}", author);
         }
 
@@ -48,26 +48,25 @@ namespace Fisher.Bookstore.Controllers
                 return BadRequest();
             }
 
-            if (!authorsRepository.AuthorExists(authorId))
+            if (!AuthorsRepository.AuthorExists(authorId))
             {
                 return NotFound();
             }
 
-            authorsRepository.UpdateAuthor(author);
+            AuthorsRepository.UpdateAuthor(author);
             return Ok(author);
         }
 
-        [HttpDelete("{authorId}")]
+        [HttpDelete("{bookId}")]
         public IActionResult Delete(int authorId)
         {
-            if (!authorsRepository.AuthorExists(authorId))
+            if (!AuthorsRepository.AuthorExists(authorId))
             {
                 return NotFound();
             }
 
-            authorsRepository.DeleteAuthor(authorId);
+            AuthorsRepository.DeleteAuthor(authorId);
             return Ok();
         }
-
     }
 }
