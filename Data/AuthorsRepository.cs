@@ -2,22 +2,14 @@ using System.Collections.Generic;
 using Fisher.Bookstore.Data;
 using Fisher.Bookstore.Models;
 
-namespace Fisher.Bookstore.Services
-{
-
-public class AuthorsRepository : IAuthorsRepository
+namespace Fisher.Bookstore.Services{
+    public class AuthorRepository : IAuthorsRepository
     {
         private readonly BookstoreContext db;
 
-        public IEnumerable<Author> GetAuhtors()
-        {
-            return db.Authors;
+        public AuthorRepository(BookstoreContext db){
+            this.db=db;
         }
-        public AuthorsRepository(BookstoreContext db)
-        {
-            this.db = db;
-        }
-
         public int AddAuthor(Author author)
         {
             db.Authors.Add(author);
@@ -49,9 +41,9 @@ public class AuthorsRepository : IAuthorsRepository
 
         public void UpdateAuthor(Author author)
         {
-           var updateAuthor = db.Authors.Find(author.Id);
-           updateAuthor.Name = author.Name;
-            db.Authors.Update(updateAuthor);
+            var UpdateAuthor = db.Authors.Find(author.Id);
+            UpdateAuthor.Name = author.Name;
+            db.Authors.Update(UpdateAuthor);
             db.SaveChanges();
         }
     }
