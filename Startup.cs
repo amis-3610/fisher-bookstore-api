@@ -11,10 +11,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-
+using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Fisher.Bookstore.Services;
 using Fisher.Bookstore.Data;
 
@@ -32,6 +32,28 @@ namespace Fisher.Bookstore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+           string domain = $"https://{Configuration["Auth0:Domain"]}/";
+            services.AddAuthentication(options =>
+            {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme; 
+            }).AddJwtBearer(options => 
+            {
+                options.Authority = domain; 
+                options.Audience = Configuration["Auth0:ApiIdentifier"]; 
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    NameClaimType = ClaimTypes.NameIdentifier
+                }; 
+            }); 
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("read:messages", policy => policy.Requirements.Add(new HasScopeRequirement("read:messages", domain))); 
+            }); 
+
+            services.AddSingleton<IAuthorizationHandler, HasScopeHandler>(); 
+
             services.AddControllers();
             services.AddCors();
             services.AddDbContext<BookstoreContext>(options =>
@@ -59,6 +81,8 @@ namespace Fisher.Bookstore
 
             app.UseAuthorization();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
