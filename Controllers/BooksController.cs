@@ -1,3 +1,4 @@
+
 using Microsoft.AspNetCore.Mvc;
 using Fisher.Bookstore.Services;
 using Fisher.Bookstore.Models;
@@ -6,6 +7,7 @@ using Fisher.Bookstore.Models;
 namespace Fisher.Bookstore.Controllers
 {
     
+
     [ApiController]
     [Route("api/[controller]")]
     public class BooksController : ControllerBase
@@ -37,11 +39,13 @@ namespace Fisher.Bookstore.Controllers
         
         [HttpPost]
         public IActionResult Post([FromBody] Book book){
+
             var bookId = booksRepository.AddBook(book);
             return Created($"https://localhost:5001/api/books/{bookId}", book);
         }
 
         [HttpPut("{bookId}")]
+
         public IActionResult Put (int bookId, [FromBody] Book book){
             if(bookId != book.Id){
                 return BadRequest();
@@ -68,5 +72,9 @@ namespace Fisher.Bookstore.Controllers
 
         }
 
+
+            booksRepository.DeleteBook(bookId);
+            return Ok();
+        }
     }
 }
