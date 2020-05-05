@@ -6,6 +6,7 @@ namespace Fisher.Bookstore.Data
     public class BookstoreContext : DbContext
     {
         public BookstoreContext(DbContextOptions<BookstoreContext> options)
+
                 : base(options)
             {}
             public DbSet<Book> Books { get; set;}
@@ -27,5 +28,6 @@ namespace Fisher.Bookstore.Data
                 .WithMany(a => a.BookAuthor)
                 .HasForeignKey(ba => ba.AuthorId);
             }
+
     }
 }
