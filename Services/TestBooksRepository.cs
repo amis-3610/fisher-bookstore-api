@@ -50,6 +50,7 @@ namespace Fisher.Bookstore.Services
         public IEnumerable<Book> GetBooks()
         {
             return books.Values;
+
         }
 
         public void UpdateBook(Book book)
